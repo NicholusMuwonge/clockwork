@@ -27,19 +27,11 @@ module AtlassianServices
       body = request.get.body
       status = request.get.status
 
-      handle_response(body, status, request.get)
-    end
-
-    private
-
-    def handle_response(body, status, response)
-      if response.success?
-        parsed_body = JSON.parse(body)
-
-        OpenStruct.new(success?: true, response_code: status, response_body: parsed_body)
-      else
-        OpenStruct.new(success?: false, response_code: status, response_body: body)
-      end
+      ResponseHandler.handle_response(body, status, request.get)
+    rescue URI::InvalidURIError => e
+      ResponseHandler.handle_invalid_uri_error(e)
+    rescue JSON::ParserError => e
+      ResponseHandler.handle_json_parser_error(e)
     end
   end
 end

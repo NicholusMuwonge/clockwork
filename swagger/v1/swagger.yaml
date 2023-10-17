@@ -1,0 +1,31 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/components/unassigned":
+    get:
+      summary: Generates reports for unassigned components and the issues that belong
+        to them.
+      tags:
+      - UnassignedComponents
+      parameters:
+      - name: project_key
+        in: query
+        required: true
+        minLength: 1
+        schema:
+          type: string
+      responses:
+        '200':
+          description: components loaded
+        '400':
+          description: bad request
+        '404':
+          description: bad request
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000/
