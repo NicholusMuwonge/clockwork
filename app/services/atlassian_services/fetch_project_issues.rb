@@ -33,12 +33,11 @@ module AtlassianServices
     private
 
     def handle_response(body, status, response)
+      response_body = JSON.parse(body)
       if response.success?
-        parsed_body = JSON.parse(body)
-
-        OpenStruct.new(success?: true, response_code: status, response_body: parsed_body)
+        OpenStruct.new(success?: true, response_code: status, response_body:)
       else
-        OpenStruct.new(success?: false, response_code: status, response_body: body)
+        OpenStruct.new(success?: false, response_code: status, response_body:)
       end
     end
   end

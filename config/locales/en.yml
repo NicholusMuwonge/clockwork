@@ -38,3 +38,4 @@ en:
     something_unexpected: "Something unexpected happened."
   success_messages:
     report_generation_initiated: "Sync initiated successfully."
+    blank_unassigned_components: "There are no components without a lead at the moment."
