@@ -31,3 +31,10 @@
 
 en:
   welcome_message: "Welcome to Clockwork."
+  components_report:
+    subject: "Unassigned Components Issue Count."
+    success_message: "A report has ben generated for the outstanding unassigned components and the number of issues that belong to them. \n\nYou can find it attached to this email.\n\n Regards."
+  errors:
+    something_unexpected: "Something unexpected happened."
+  success_messages:
+    report_generation_initiated: "Sync initiated successfully."
