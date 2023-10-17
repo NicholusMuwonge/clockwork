@@ -5,7 +5,7 @@ module Api
     class ComponentsController < ApplicationController
       def sync_unassigned_components_with_issue_count
         confirmed_params = validate_params(components_params)
-        project_key = confirmed_params['project_key']
+        project_key = confirmed_params['project_key']&.strip
 
         response = AppServices::ComponentsProcessor.new(project_key:).call
 

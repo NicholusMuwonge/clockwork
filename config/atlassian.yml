@@ -1,8 +1,11 @@
 default: &default
   api_url: "https://herocoders.atlassian.net/rest/api/3"
-
+  in_operator_batch_limit: 1000
 development:
   <<: *default
 
 production:
+  <<: *default
+
+test:
   <<: *default

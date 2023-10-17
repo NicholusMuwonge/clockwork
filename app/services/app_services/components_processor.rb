@@ -5,7 +5,7 @@ module AppServices
     def initialize(url_params)
       @url_params = url_params
       @cached_file = Rails.cache.fetch("#{@url_params[:project_key]&.downcase}_components_file_cache")
-      @batch_size = 1000
+      @batch_size = Rails.application.config_for(:atlassian)['in_operator_batch_limit']
     end
 
     def call
