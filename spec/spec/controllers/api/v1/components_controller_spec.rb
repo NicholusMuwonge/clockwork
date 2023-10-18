@@ -18,7 +18,7 @@ RSpec.describe Api::V1::ComponentsController, type: :controller do
 
       context 'when components are present' do
         let(:processor) do
-          instance_double(AppServices::ComponentsProcessor, call: OpenStruct.new(success?: true, response_body: [{}]))
+          instance_double(AppServices::ComponentsProcessor, call: ResponseHandler.structure_response([{}], nil, true))
         end
 
         it 'initiates components processing and returns success message' do
@@ -31,7 +31,8 @@ RSpec.describe Api::V1::ComponentsController, type: :controller do
 
       context 'when components are not present' do
         let(:processor) do
-          instance_double(AppServices::ComponentsProcessor, call: OpenStruct.new(success?: true, response_body: []))
+          response = ResponseHandler.structure_response([], :success, true)
+          instance_double(AppServices::ComponentsProcessor, call: response)
         end
 
         it 'returns success message for empty components' do
@@ -44,9 +45,10 @@ RSpec.describe Api::V1::ComponentsController, type: :controller do
 
       context 'when an unexpected error occurs' do
         let(:processor) do
+          response = ResponseHandler.structure_response({ 'errorMessages' => ['Unexpected error.'] },
+                                                        :internal_server_error)
           instance_double(AppServices::ComponentsProcessor,
-                          call: OpenStruct.new(success?: false, response_body: { 'errorMessages' => ['Unexpected error.'] },
-                                               response_code: :internal_server_error))
+                          call: response)
         end
 
         it 'returns an error message' do
@@ -59,9 +61,9 @@ RSpec.describe Api::V1::ComponentsController, type: :controller do
 
       context 'when an unexpected error occurs with no api provided error' do
         let(:processor) do
+          response = ResponseHandler.structure_response({}, :internal_server_error)
           instance_double(AppServices::ComponentsProcessor,
-                          call: OpenStruct.new(success?: false, response_body: {},
-                                               response_code: :internal_server_error))
+                          call: response)
         end
 
         it 'returns an error message' do

@@ -18,7 +18,7 @@ RSpec.describe AppServices::ComponentsProcessor do
 
         expect(processor_instance).to have_received(:send_cached_report).once
         expect(response.success?).to be true
-        expect(response.response_body).to eq(message: 'Report sent.')
+        expect(response.response_body).to eq(message: 'A report has been sent.')
       end
     end
 
@@ -30,8 +30,9 @@ RSpec.describe AppServices::ComponentsProcessor do
 
       context 'when the component fetch is successful' do
         let(:fetcher) do
+          response = ResponseHandler.structure_response([{ 'id' => 1, 'name' => 'UI' }], :success, true)
           instance_double(AtlassianServices::FetchProjectComponents,
-                          call: OpenStruct.new(success?: true, response_body: [{ 'id' => 1, 'name' => 'UI' }]))
+                          call: response)
         end
 
         it 'processes components and returns success' do
@@ -44,9 +45,9 @@ RSpec.describe AppServices::ComponentsProcessor do
 
       context 'when the component fetch is unsuccessful' do
         let(:fetcher) do
+          response = ResponseHandler.structure_response({ 'errorMessages' => ['Not Found'] }, 404)
           instance_double(AtlassianServices::FetchProjectComponents,
-                          call: OpenStruct.new(success?: false, response_code: 404,
-                                               response_body: { 'errorMessages' => ['Not Found'] }))
+                          call: response)
         end
 
         it 'returns an error response' do

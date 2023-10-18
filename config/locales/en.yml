@@ -39,3 +39,4 @@ en:
   success_messages:
     report_generation_initiated: "Sync initiated successfully."
     blank_unassigned_components: "There are no components without a lead at the moment."
+    report_sent: "A report has been sent."

@@ -2,19 +2,28 @@
 
 class ResponseHandler
   def self.handle_json_parser_error(error)
-    OpenStruct.new(success?: false, response_code: 422, response_body: "JSON parsing error: #{error.message}")
+    response_body = "JSON parsing error: #{error.message}"
+    response_code = 422
+    structure_response(response_body, response_code)
   end
 
   def self.handle_invalid_uri_error(_error)
-    OpenStruct.new(success?: false, response_code: 422, response_body: { 'errorMessages' => ['Invalid URI.'] })
+    response_body = { 'errorMessages' => ['Invalid URI.'] }
+    response_code = 422
+    structure_response(response_body, response_code)
+  end
+
+  def self.structure_response(response_body, response_code = nil, success = false, additional_properties = {})
+    default_properties = { success?: success, response_code:, response_body: }
+    OpenStruct.new(default_properties.merge(additional_properties))
   end
 
   def self.handle_response(body, status, response)
     response_body = JSON.parse(body)
     if response.success?
-      OpenStruct.new(success?: true, response_code: status, response_body:)
+      structure_response(response_body, status, true)
     else
-      OpenStruct.new(success?: false, response_code: status, response_body:)
+      structure_response(response_body, status)
     end
   end
 end
